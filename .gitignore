@@ -1,2 +1,4 @@
 .DS_Store
 explore.ipynb 
+*.pyc
+__pycache__/
