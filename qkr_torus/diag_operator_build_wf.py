@@ -72,7 +72,7 @@ def wigner_function(rho):
             tmp[d] += r
 
         # Now vals[a2] = tmp_d * exp(2π i a2 d / N)
-        W[a1] = (1/N) * (np.fft.fft(tmp))
+        W[a1] = np.fft.ifft(tmp)
 
     return W
     
@@ -84,7 +84,7 @@ def density_matrix(W):
 
     for b in range(N):
         # undo the FFT and the 1/N factor
-        tmp = np.fft.ifft(W[b]) * N
+        tmp = np.fft.fft(W[b])
 
         # place values back on the stripe k + l = 2b
         for d in range(N):
