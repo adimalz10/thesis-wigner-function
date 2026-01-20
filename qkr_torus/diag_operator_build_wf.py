@@ -1,7 +1,7 @@
 import numpy as np
 import scipy as scp
 
-def diagonalize_floquet_operator(N, alpha, beta, K):
+def diagonalize_floquet_operator(N, beta, alpha, K):
     """
     N: number of dimensions in the Hilbert Space
     alpha: breaking of parity
@@ -30,24 +30,23 @@ def diagonalize_floquet_operator(N, alpha, beta, K):
 
     return U
 
-def wigner_function(psi):
+def wigner_function(rho):
     """
-    psi: wavefunction
+    rho: density matrix
     """
 
-    psi = psi.reshape(-1)
-    N = len(psi)
-    rho = np.outer(psi, psi.conj())      # density matrix
+    N = len(rho[0])
 
     # indices k, l
     k = np.arange(N).reshape(N,1)
     l = np.arange(N).reshape(1,N)
+    inv2 = pow(2, -1, N)
 
     # all possible (k+l) mod N
     S = (k + l) % N
 
     # all possible (k-l) mod N
-    D = (k - l) % N
+    D = ((k - l)) % N
 
     # precompute rho(k,l) once
     R = rho
@@ -73,6 +72,25 @@ def wigner_function(psi):
             tmp[d] += r
 
         # Now vals[a2] = tmp_d * exp(2π i a2 d / N)
-        W[a1] = (1/N) * np.fft.fft(tmp)
+        W[a1] = (1/N) * (np.fft.fft(tmp))
 
-    return W.real
+    return W
+    
+
+def density_matrix(W):
+    
+    N = W.shape[0]
+    rho = np.zeros((N, N), dtype=complex)
+
+    for b in range(N):
+        # undo the FFT and the 1/N factor
+        tmp = np.fft.ifft(W[b]) * N
+
+        # place values back on the stripe k + l = 2b
+        for d in range(N):
+            # solve k - l = d, k + l = 2b
+            k = (b + d * pow(2, -1, N)) % N
+            l = (2*b - k) % N
+            rho[k, l] = tmp[d]
+
+    return rho
