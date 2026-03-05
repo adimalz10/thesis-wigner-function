@@ -1,7 +1,7 @@
 import numpy as np
 import scipy as scp
 
-def diagonalize_floquet_operator(N, beta, alpha, K):
+def diagonalize_floquet_operator(N, alpha, beta, K):
     """
     N: number of dimensions in the Hilbert Space
     alpha: breaking of parity
