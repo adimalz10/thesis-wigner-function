@@ -25,9 +25,13 @@ def diagonalize_floquet_operator(N, alpha, beta, K):
     return U
 
 
-def evolve_state(U, psi, steps):
+def evolve_state(U, psi0, steps):
 
-    for _ in range(steps):
-        psi = U @ psi
+    psi = psi0
+    if steps != 0:
+        for _ in range(steps):
+            psi = U @ psi0
+            psi0 = psi
+        return psi
 
-    return psi
+    return psi0
