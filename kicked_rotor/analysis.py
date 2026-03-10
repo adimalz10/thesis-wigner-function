@@ -23,7 +23,7 @@ def negativity_time_series(N, alpha, beta, kappa, steps):
     return neg
 
 
-def coupling_scan(N, kappas, alpha, beta, steps=10):
+def coupling_scan(N, kappas, alpha, beta, steps):
     """
     Negativity vs coupling strength.
     """
@@ -42,7 +42,7 @@ def coupling_scan(N, kappas, alpha, beta, steps=10):
     return neg
 
 
-def system_size_scan(sizes, kappa, alpha, beta, steps=10):
+def system_size_scan(sizes, kappa, alpha, beta, steps):
     """
     Negativity vs Hilbert space dimension.
     """
