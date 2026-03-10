@@ -23,7 +23,7 @@ def negativity_time_series(N, alpha, beta, kappa, steps):
     return neg
 
 
-def coupling_scan(N, kappas, alpha, beta, steps):
+def coupling_scan(N, kappas, alpha, beta, steps = None):
     """
     Negativity vs coupling strength.
     """
@@ -35,14 +35,14 @@ def coupling_scan(N, kappas, alpha, beta, steps):
         U = diagonalize_floquet_operator(N, alpha, beta, kappa)
 
         psi = localized_state(N)
-        psi = evolve_state(U, psi, steps)
+        psi = evolve_state(U, psi, steps = steps)
 
         neg[i] = negativity_from_state(psi)
 
     return neg
 
 
-def system_size_scan(sizes, kappa, alpha, beta, steps):
+def system_size_scan(sizes, kappa, alpha, beta, steps = None):
     """
     Negativity vs Hilbert space dimension.
     """
@@ -54,14 +54,14 @@ def system_size_scan(sizes, kappa, alpha, beta, steps):
         U = diagonalize_floquet_operator(N, alpha, beta, kappa)
 
         psi = localized_state(N)
-        psi = evolve_state(U, psi, steps)
+        psi = evolve_state(U, psi, steps = steps)
 
         neg[i] = negativity_from_state(psi)
 
     return neg
 
 
-def symmetry_scan(alphas, betas, N, kappa, steps):
+def symmetry_scan(alphas, betas, N, kappa, steps = None):
     """
     Negativity after time evolution for a grid of (alpha, beta).
 
@@ -84,7 +84,7 @@ def symmetry_scan(alphas, betas, N, kappa, steps):
             U = diagonalize_floquet_operator(N, alpha, beta, kappa)
 
             psi = localized_state(N)
-            psi = evolve_state(U, psi, steps)
+            psi = evolve_state(U, psi, steps = steps)
 
             neg[i, j] = negativity_from_state(psi)
 
