@@ -25,13 +25,15 @@ def diagonalize_floquet_operator(N, alpha, beta, K):
     return U
 
 
-def evolve_state(U, psi0, steps):
+def evolve_state(U, psi, steps = None):
 
-    psi = psi0
-    if steps != 0:
-        for _ in range(steps):
-            psi = U @ psi0
-            psi0 = psi
+    if steps is None:
+        steps = U.shape[0]  # heisenberg time
+
+    if steps == 0:
         return psi
 
-    return psi0
+    for _ in range(steps):
+        psi = U @ psi
+
+    return psi
