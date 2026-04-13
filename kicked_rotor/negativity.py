@@ -6,4 +6,4 @@ def negativity_from_state(psi):
 
     W = wigner_function(psi).real
 
-    return 0.5*np.sum(np.abs(W) - W)
+    return 0.5*np.sum(np.abs(W) - W)  

@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def wigner_function(psi):
+"""def wigner_function(psi):
 
     rho = psi[:,None] * psi.conj()[None,:]
 
@@ -27,7 +27,23 @@ def wigner_function(psi):
         for r,d in zip(R_stripe, D_stripe):
             tmp[d] += r
 
-        W[a1] = np.fft.ifft(tmp)
+        W[:, a1] = np.fft.ifft(tmp)
+
+    return W.real"""
+
+def wigner_function(psi):
+
+    N = len(psi)
+    W = np.zeros((N, N), dtype=float)
+
+    inv2 = pow(2, -1, N)
+
+    d = np.arange(N)  # computed once outside the loop
+    for q in range(N):
+        k = ((q + d)*inv2) % N
+        l = ((q - d)*inv2) % N
+        corr = psi[k] * psi[l].conj()   # vectorised over all d at once
+        W[:, q] = np.fft.ifft(corr).real
 
     return W.real
 
