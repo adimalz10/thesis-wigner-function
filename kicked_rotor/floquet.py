@@ -54,5 +54,6 @@ def evolve_state(U, psi, steps = None):
 
     for _ in range(steps):
         psi = U @ psi
+        assert abs(np.linalg.norm(psi) - 1)<1e-3, "Wavefunction not normalized"
 
     return psi
