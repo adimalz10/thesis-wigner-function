@@ -11,16 +11,10 @@ def diagonalize_floquet_operator(N, alpha, beta, K):
 
     U = np.zeros((N, N), dtype = complex)
 
-    # create the floquet operator
-
-    # first step: make the DFT vector and perform a DFT
-
     m = np.arange(N)
     dm = np.exp((-1j * np.pi * (m + beta)**2)/N)
 
     f = scp.fft.ifft(dm)
-
-    # next step is to build the operator now
 
     n = m.copy()
     kn = np.exp((1j * N * K)/(2*np.pi) * np.cos(2*np.pi*(n+alpha)/N)) # kick operator
@@ -54,19 +48,14 @@ def wigner_function(rho):
     # output Wigner function
     W = np.zeros((N, N), dtype=complex)
 
-    # For each a1, pick out the stripe where k+l = 2*a1
     for a1 in range(N):
-        mask = (S == (2*a1) % N)              # boolean mask for that diagonal stripe
-        vals = np.zeros(N, dtype=complex)     # values for all a2 for this a1
+        mask = (S == (2*a1) % N)              
+        vals = np.zeros(N, dtype=complex)     
 
-        # pick the (k,l) pairs in this stripe
-        R_stripe = R[mask]                    # these are rho(k,l)
-        D_stripe = D[mask]                    # these are (k-l)
+        
+        R_stripe = R[mask]                    
+        D_stripe = D[mask]                    
 
-        # compute FFT along a2 direction:
-        # sum over stripe entries: rho(k,l) * exp(2πi a2 (k-l)/N)
-        # which is exactly the DFT of rho(k,l) grouped by (k-l)
-        # so build an accumulator of size N for each (k-l)
         tmp = np.zeros(N, dtype=complex)
         for r, d in zip(R_stripe, D_stripe):
             tmp[d] += r
@@ -83,10 +72,9 @@ def density_matrix(W):
     rho = np.zeros((N, N), dtype=complex)
 
     for b in range(N):
-        # undo the FFT and the 1/N factor
+    
         tmp = np.fft.fft(W[b])
 
-        # place values back on the stripe k + l = 2b
         for d in range(N):
             # solve k - l = d, k + l = 2b
             k = (b + d * pow(2, -1, N)) % N
